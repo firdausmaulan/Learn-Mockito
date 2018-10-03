@@ -15,6 +15,9 @@ import org.robolectric.annotation.Config
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import org.mockito.Mockito
+
+
 
 
 @RunWith(RobolectricTestRunner::class)
@@ -40,8 +43,7 @@ class ProfilePresenterTest {
                 .resume()
                 .get()
         MockitoAnnotations.initMocks(this)
-        presenter = ProfilePresenter(callProfile, view)
-        Mockito.`when`(apiService.requestProfile()).thenReturn(callProfile)
+        presenter = ProfilePresenter(view)
     }
 
     @Test
@@ -52,7 +54,7 @@ class ProfilePresenterTest {
 
     @Test
     fun requestProfile() {
-        presenter.requestProfile()
+        presenter.requestProfile(callProfile)
         Mockito.verify(view).showProgressDialog()
         Mockito.verify(callProfile).enqueue(callbackArgumentCaptor.capture())
         callbackArgumentCaptor.value.onResponse(
